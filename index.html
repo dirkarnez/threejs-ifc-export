@@ -16,18 +16,21 @@
 
 <!-- Or by plain js https://medium.com/@necsoft/three-js-101-hello-world-part-1-443207b1ebe1 -->
 	<script type="importmap">
-	{
-		"imports": {
-		"three": "https://unpkg.com/three@0.158.0/build/three.module.js",
-		"three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+		{
+			"imports": {
+				"three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+				"three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+			}
 		}
-	}
 	</script>
 </head>
 
 <body>
 	<script type="module">
 		import * as THREE from 'three';
+		import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
+		import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
+
 		// ------------------------------------------------
 		// BASIC SETUP
 		// ------------------------------------------------
@@ -56,19 +59,54 @@
 		// ------------------------------------------------
 
 		// Create a Cube Mesh with basic material
-		var geometry = new THREE.BoxGeometry(1, 1, 1);
-		var material = new THREE.MeshBasicMaterial({ color: "#433F81" });
-		var cube = new THREE.Mesh(geometry, material);
+		var cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+		var sphereGeometry = new THREE.SphereGeometry(.65, 32, 32);
 
-		// Add cube to Scene
-		scene.add(cube);
+		// Merge the geometries using BufferGeometryUtils.mergeGeometries
+		const mergedGeometry = BufferGeometryUtils.mergeGeometries([cubeGeometry, sphereGeometry]);
+
+		debugger;
+
+		// Create a mesh with the merged geometry
+		const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+		const mesh = new THREE.Mesh(mergedGeometry, material);
+		scene.add(mesh);
+
+		// Create a group and add the mesh to it
+		const group = new THREE.Group();
+		group.add(mesh);
+
+
+		// Export the merged geometry to OBJ format
+		const exporter = new OBJExporter();
+		const objData = exporter.parse(group);
+		downloadOBJ(objData, 'merged_geometry.obj');
+
+		function downloadOBJ(data, filename) {
+			const element = document.createElement('a');
+			element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+			element.setAttribute('download', filename);
+			element.style.display = 'none';
+			document.body.appendChild(element);
+			element.click();
+			document.body.removeChild(element);
+		}
+
+		// var material = new THREE.MeshBasicMaterial({ color: "#433F81" });
+		// var cube = new THREE.Mesh(cubeGeometry, material);
+		// var sphere =  new THREE.Mesh(sphereGeometry, material); 
+
+		// scene.add(sphere);
+
+		// // Add cube to Scene
+		// scene.add(cube);
 
 		// Render Loop
 		var render = function () {
 			requestAnimationFrame(render);
 
-			cube.rotation.x += 0.01;
-			cube.rotation.y += 0.01;
+			// cube.rotation.x += 0.01;
+			// cube.rotation.y += 0.01;
 
 			// Render the scene
 			renderer.render(scene, camera);
