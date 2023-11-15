@@ -4,6 +4,8 @@
 ### Tools
 - `.ifc`
   - https://ifcjs.github.io/web-ifc/demo/
+  - https://ifcjs.github.io/web-ifc-three/example/index
+  - https://ifcjs.github.io/web-ifc-viewer/example/index
 - `.obj`
   - [Online 3D Viewer](https://fetchcfd.com/3d-viewer)
   - [Creators 3D | Online 3D Viewer](https://www.creators3d.com/online-viewer)
