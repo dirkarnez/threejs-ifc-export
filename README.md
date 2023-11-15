@@ -1,6 +1,6 @@
 [threejs-ifc-export](https://dirkarnez.github.io/threejs-ifc-export/)
 =====================================================================
-
+**https://github.com/IfcOpenShell/IfcOpenShell/blob/v0.7.0/src/blenderbim/scripts/obj2ifc.py**
 ### Tools
 - `.ifc`
   - https://ifcjs.github.io/web-ifc/demo/
